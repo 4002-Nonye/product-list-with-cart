@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 body {
-  @apply font-sans-serif text-[16px] bg-rose-100 m-16 flex justify-center ;
- 
+  @apply m-8 flex justify-center bg-rose-100 font-sans-serif text-[16px] lg:m-14;
 }
 ::-webkit-scrollbar {
   @apply hidden;
 }
-.noScroll{@apply h-screen overflow-hidden}
+.noScroll {
+  @apply h-screen overflow-hidden;
+}

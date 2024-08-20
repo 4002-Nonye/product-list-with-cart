@@ -1,13 +1,16 @@
-import { useProduct } from '../context/ProductContext';
-import EmptyCart from './EmptyCart';
-import OrderSummary from './OrderSummary';
+import React from "react";
+
+import { useProduct } from "../context/ProductContext";
+import EmptyCart from "./EmptyCart";
+import OrderSummary from "./OrderSummary";
+
 function Cart() {
-  const { orders,getTotalCartQuantity } = useProduct();
+  const { orders, getTotalCartQuantity } = useProduct();
   const totalOrders = orders.length;
 
   return (
-    <div className=' bg-white h-fit px-5 pb-7 pt-4 w-96'>
-      <p className='text-red font-bold capitalize text-xl mb-2'>
+    <div className="mt-6 h-fit  bg-white px-5 pb-7 pt-4 md:mt-0 lg:w-96">
+      <p className="mb-2 text-xl font-bold capitalize text-red">
         your cart ({getTotalCartQuantity(orders)})
       </p>
 

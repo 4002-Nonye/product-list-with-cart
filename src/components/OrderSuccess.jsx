@@ -1,8 +1,10 @@
-import { FaRegCheckCircle } from 'react-icons/fa';
-import { useProduct } from '../context/ProductContext';
-import Button from './Button';
-import OrderSuccessItem from './OrderSuccessItem';
-import { useModal } from '../context/ModalContext';
+import React from "react";
+import { FaRegCheckCircle } from "react-icons/fa";
+
+import { useModal } from "../context/ModalContext";
+import { useProduct } from "../context/ProductContext";
+import Button from "./Button";
+import OrderSuccessItem from "./OrderSuccessItem";
 
 function OrderSuccess() {
   const { orders, getTotalAmount, handleDefault } = useProduct();
@@ -10,34 +12,34 @@ function OrderSuccess() {
   return (
     <>
       <div
-        className={`fixed bg-white z-50 flex flex-col justify-center m-auto p-7 rounded-lg left-2/4 top-2/4 transform -translate-x-1/2 -translate-y-1/2 w-[27rem] ${
-          showModal ? 'opacity-100 visible' : 'opacity-0 invisible'
+        className={`fixed left-2/4 top-2/4 z-50 m-auto flex h-screen w-full -translate-x-1/2 -translate-y-1/2 transform flex-col rounded-none bg-white p-7 md:h-fit md:w-[27rem] md:justify-center md:rounded-lg ${
+          showModal ? "visible opacity-100" : "invisible opacity-0"
         } transition duration-700 ease-in-out`}
       >
-        <FaRegCheckCircle className='text-green text-3xl mb-3' />
+        <FaRegCheckCircle className="mb-3 text-3xl text-green" />
 
-        <h2 className='text-rose-500 text-3xl font-bold mb-2'>
+        <h2 className="mb-2 text-3xl font-bold text-rose-500">
           Order Confirmed
         </h2>
-        <p className='text-rose-300'>We hope you enjoy your food!</p>
+        <p className="text-rose-300">We hope you enjoy your food!</p>
 
-        <div className='bg-rose-100 px-4 pt-4 mt-4 rounded-lg divide-y-[1px] '>
-          <div className='max-h-72 overflow-auto'>
+        <div className="mt-4 divide-y-[1px] rounded-lg bg-rose-100 px-4 pt-4">
+          <div className="h-32 overflow-auto lg:h-72">
             {orders.map((order) => (
               <OrderSuccessItem order={order} key={order.id} />
             ))}
           </div>
 
-          <div className='flex justify-between py-5'>
-            <p className='text-rose-400 font-semibold'>Order Total</p>
-            <p className='text-lg font-bold text-rose-500'>
+          <div className="flex justify-between py-5">
+            <p className="font-semibold text-rose-400">Order Total</p>
+            <p className="text-lg font-bold text-rose-500">
               ${getTotalAmount(orders).toFixed(2)}
             </p>
           </div>
         </div>
 
         <Button
-          type='newOrder'
+          type="newOrder"
           onclick={() => {
             startNewOrder();
             handleDefault();
@@ -48,8 +50,8 @@ function OrderSuccess() {
       </div>
 
       <div
-        className={`bg-black bg-opacity-50 backdrop-blur-sm fixed left-0 right-0 top-0 bottom-0 h-screen z-10 ${
-          showModal ? ' opacity-100 ' : 'opacity-0 invisible'
+        className={`fixed bottom-0 left-0 right-0 top-0 z-10 h-screen bg-black bg-opacity-50 backdrop-blur-sm ${
+          showModal ? "opacity-100" : "invisible opacity-0"
         } transition duration-700 ease-in-out`}
       />
     </>

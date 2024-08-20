@@ -1,22 +1,18 @@
-/* eslint-disable react/prop-types */
+import React from "react";
+import { MdAddShoppingCart } from "react-icons/md";
 
-import { MdAddShoppingCart } from 'react-icons/md';
-import { LuPlusCircle } from 'react-icons/lu';
-import { LuMinusCircle } from 'react-icons/lu';
-import Button from './Button';
-import { useProduct } from '../context/ProductContext';
+import { useProduct } from "../context/ProductContext";
+import Button from "./Button";
+import UpdateItemQuantity from "./UpdateItemQuantity";
 
 function DessertCard({ product }) {
-  const { increaseItemQuantity, decreaseItemQuantity, orders, dispatch } =
-    useProduct();
+  const { orders, dispatch } = useProduct();
 
-
-    // FIND THE QUANTITY OF ITEM CLICKED ON
+  // FIND THE QUANTITY OF ITEM CLICKED ON
   const currentQuantity =
     orders.find((order) => order.id === product.id)?.quantity ?? 0;
 
   const { name, price, category, id } = product;
-
 
   // NEW OBJECT TO ADD TO ORDERS ARRAY
   function handleAddToCart() {
@@ -26,48 +22,41 @@ function DessertCard({ product }) {
       quantity: 1,
       unitPrice: price,
       totalPrice: price * 1,
-      thumbnail:product.image.thumbnail
+      thumbnail: product.image.thumbnail,
     };
-    dispatch({ type: 'products/addToCart', payload: newOrder });
+    dispatch({ type: "products/addToCart", payload: newOrder });
   }
 
   return (
-    <div className='mt-5'>
-      <div className=' flex flex-col '>
-        <div className=' flex flex-col items-center relative'>
+    <div className="mt-5">
+      <div className="flex flex-col">
+        <div className="relative flex flex-col items-center">
           <img
-            src={product.image.desktop}
-            alt='product-img'
-            className={`w-72 h-auto rounded-md ${currentQuantity&&'border-red border-2'}`}
+            srcSet={`
+              ${product.image.mobile} 480w,
+              ${product.image.tablet} 768w,
+              ${product.image.desktop} 1024w
+            `}
+            sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, 1024px"
+            src={product.image.desktop} // Fallback image
+            alt="product-img"
+            className={`h-72 w-full rounded-lg  ${
+              currentQuantity && "border-2 border-red"
+            }`}
           />
-
           {currentQuantity ? (
-            <div className='absolute z-10 top-[15.5rem] bg-red text-white px-5 py-3 rounded-full flex justify-between w-40'>
-              <Button
-                type='decreaseItem'
-                onclick={() => decreaseItemQuantity(id)}
-              >
-                <LuMinusCircle />
-              </Button>
-              {currentQuantity}
-              <Button
-                type='increaseItem'
-                onclick={() => increaseItemQuantity(id)}
-              >
-                <LuPlusCircle />
-              </Button>
-            </div>
+            <UpdateItemQuantity currentQuantity={currentQuantity} id={id} />
           ) : (
-            <Button type='addToCart' onclick={handleAddToCart}>
-              <MdAddShoppingCart className='text-red text-2xl' /> Add to Cart
+            <Button type="addToCart" onclick={handleAddToCart}>
+              <MdAddShoppingCart className="text-2xl text-red" /> Add to Cart
             </Button>
           )}
         </div>
 
-        <div className='space-y-[2px] mt-9 '>
-          <h2 className='text-rose-400'>{category}</h2>
-          <p className='font-bold text-rose-500 text-xl'>{name}</p>
-          <p className='text-red font-bold'>${price?.toFixed(2)}</p>
+        <div className="mb-8 mt-9 space-y-[2px]">
+          <h2 className="text-rose-400">{category}</h2>
+          <p className="text-xl font-bold text-rose-500">{name}</p>
+          <p className="font-bold text-red">${price?.toFixed(2)}</p>
         </div>
       </div>
     </div>

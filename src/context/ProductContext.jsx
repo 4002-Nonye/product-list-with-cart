@@ -1,25 +1,24 @@
-/* eslint-disable react/prop-types */
-import { createContext, useContext, useEffect, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const ProductContext = createContext();
 
 const initialState = {
   products: [],
   orders: [],
-  status: 'loading', // 'LOADING,READY,ERROR'
+  status: "loading", // 'LOADING,READY,ERROR'
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'products/loaded':
-      return { ...state, products: action.payload, status: '' };
-    case 'products/addToCart':
+    case "products/loaded":
+      return { ...state, products: action.payload, status: "" };
+    case "products/addToCart":
       return {
         ...state,
         orders: [...state.orders, action.payload],
       };
 
-    case 'products/increaseQuantity':
+    case "products/increaseQuantity":
       return {
         ...state,
         orders: state.orders.map((order) =>
@@ -29,12 +28,12 @@ function reducer(state, action) {
                 totalPrice: order.quantity * order.unitPrice,
                 quantity: order.quantity++,
               }
-            : order
+            : order,
         ),
       };
 
     // DECREASE QUANTITY AND WHEN IT GETS TO 0, REMOVE FROM CART
-    case 'products/decreaseQuantity':
+    case "products/decreaseQuantity":
       return {
         ...state,
         orders: state.orders
@@ -45,48 +44,48 @@ function reducer(state, action) {
                   totalPrice: order.quantity * order.unitPrice,
                   quantity: order.quantity--,
                 }
-              : order
+              : order,
           )
           .filter((order) => order.quantity > 0),
       };
 
-    case 'products/delete':
+    case "products/delete":
       return {
         ...state,
         orders: state.orders.filter((order) => order.id !== action.payload),
       };
 
-    case 'products/reset':
+    case "products/reset":
       return { ...state, orders: [] };
     default:
-      throw new Error('Action Unknown');
+      throw new Error("Action Unknown");
   }
 }
 
 const ProductProvider = ({ children }) => {
   const [{ products, status, orders }, dispatch] = useReducer(
     reducer,
-    initialState
+    initialState,
   );
 
   // GET PRODUCTS ON INITIAL RENDER
   useEffect(() => {
     fetch(`http://localhost:8000/products`)
       .then((res) => res.json())
-      .then((data) => dispatch({ type: 'products/loaded', payload: data }));
+      .then((data) => dispatch({ type: "products/loaded", payload: data }));
   }, []);
 
   const increaseItemQuantity = (id) => {
-    dispatch({ type: 'products/increaseQuantity', payload: id });
+    dispatch({ type: "products/increaseQuantity", payload: id });
   };
   const decreaseItemQuantity = (id) => {
-    dispatch({ type: 'products/decreaseQuantity', payload: id });
+    dispatch({ type: "products/decreaseQuantity", payload: id });
   };
   const deleteItem = (id) => {
-    dispatch({ type: 'products/delete', payload: id });
+    dispatch({ type: "products/delete", payload: id });
   };
 
-  const handleDefault = () => dispatch({ type: 'products/reset' });
+  const handleDefault = () => dispatch({ type: "products/reset" });
 
   const getTotalAmount = (state) =>
     state.reduce((prev, order) => prev + order.totalPrice, 0);
@@ -117,7 +116,7 @@ const useProduct = () => {
   const context = useContext(ProductContext);
   if (context === undefined)
     throw new Error(
-      'ProductContext context cannot be used outside ProductProvider'
+      "ProductContext context cannot be used outside ProductProvider",
     );
   return context;
 };

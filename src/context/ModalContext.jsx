@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from "react";
 
 const ModalContext = createContext();
 
@@ -8,30 +8,30 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'app/showModal':
+    case "app/showModal":
       return {
         showModal: true,
       };
-    case 'app/hideModal':
+    case "app/hideModal":
       return { showModal: false };
     default:
-      throw new Error('Action Unknown');
+      throw new Error("Action Unknown");
   }
 }
 
 const ModalProvider = ({ children }) => {
   const [{ showModal }, dispatch] = useReducer(reducer, initialState);
 
-  const confirmOrder = () => dispatch({ type: 'app/showModal' });
+  const confirmOrder = () => dispatch({ type: "app/showModal" });
 
-  const startNewOrder = () => dispatch({ type: 'app/hideModal' });
+  const startNewOrder = () => dispatch({ type: "app/hideModal" });
 
   return (
     <ModalContext.Provider
       value={{
         showModal,
         confirmOrder,
-        startNewOrder
+        startNewOrder,
       }}
     >
       {children}
@@ -42,7 +42,7 @@ const ModalProvider = ({ children }) => {
 const useModal = () => {
   const context = useContext(ModalContext);
   if (context === undefined)
-    throw new Error('ModalContext cannot be used outside ModalProvider');
+    throw new Error("ModalContext cannot be used outside ModalProvider");
   return context;
 };
 
